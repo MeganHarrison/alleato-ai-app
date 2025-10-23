@@ -121,11 +121,9 @@ export default function TablesLayout({
 
   return (
     <ActionButtonContext.Provider value={{ setActionButton }}>
-      <div className="w-full px-4 sm:px-6 lg:px-8">
+      <div>
         <TablesLayoutHeader actionButton={actionButton} />
-        <div className="w-full">
-          {children}
-        </div>
+        {children}
       </div>
     </ActionButtonContext.Provider>
   )

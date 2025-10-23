@@ -185,11 +185,12 @@ export const ChatSidebar = ({
       <div className="p-4">
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            {user?.app_metadata?.provider === 'google' && user?.user_metadata?.avatar_url ? (
-              <AvatarImage src={user.user_metadata.avatar_url} alt={user.user_metadata.full_name || user.email || 'User'} />
-            ) : null}
+            <AvatarImage 
+              src={user?.user_metadata?.avatar_url || "/Alleato Favicon.png"} 
+              alt={user?.user_metadata?.full_name || user?.email || 'User'} 
+            />
             <AvatarFallback>
-              <User className="h-4 w-4" />
+              <img src="/Alleato Favicon.png" alt="Alleato" className="h-6 w-6 object-contain rounded-full" />
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 truncate">
