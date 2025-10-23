@@ -135,11 +135,47 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+h1 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight text-foreground;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl font-semibold tracking-tight text-foreground;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl font-semibold text-foreground;
+  }
+
+  h4 {
+    @apply text-lg font-medium text-foreground;
+  }
+
+  h5 {
+    @apply font-medium text-foreground;
+  }
+
+  h6 {
+    @apply text-sm font-semibold uppercase tracking-wide text-foreground;
+  }
+
+  p {
+    @apply text-base leading-relaxed text-muted-foreground;
+  }
+
+  small {
+    @apply text-sm text-muted-foreground;
+  }
+
+  strong {
+    @apply font-semibold text-foreground;
+  }
+
+  a {
+    @apply text-primary hover:text-primary/80 underline-offset-2 hover:underline;
   }
 }
 

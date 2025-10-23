@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { supabase } from './supabase';
+import { supabase } from '@/lib/supabase/client'
 import { Message, FileAttachment } from '@/types/database.types';
 
 // Environment variable to determine if streaming is enabled

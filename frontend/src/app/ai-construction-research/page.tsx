@@ -17,16 +17,16 @@ import {
 
 export default function AIConstructionResearchPage() {
   return (
-    <div className="max-w-7xl mx-auto space-y-12">
+    <div className="max-w-7xl space-y-8">
       {/* Hero Section */}
-      <section className="text-center space-y-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+      <section className="space-y-4 py-4">
+        <h1 className="text-3xl font-bold tracking-tight">
           AI in Commercial Construction
         </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+        <p className="text-muted-foreground max-w-3xl">
           Strategic Analysis for Alleato: How mid-sized design-build firms can leapfrog competitors through systematic AI adoption
         </p>
-        <div className="flex justify-center gap-4 pt-4">
+        <div className="flex gap-4 pt-4">
           <Badge variant="secondary" className="text-base px-4 py-2">
             <Clock className="mr-2 h-4 w-4" />
             18-24 Month Roadmap
@@ -46,26 +46,26 @@ export default function AIConstructionResearchPage() {
 
       {/* Executive Summary */}
       <section className="space-y-6">
-        <h2 className="text-3xl font-bold">Executive Summary</h2>
+        <h2>Executive Summary</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="p-6 border-l-4 border-l-blue-500">
-            <h3 className="text-xl font-semibold mb-2">The Opportunity</h3>
+            <h4 className="mb-2">The Opportunity</h4>
             <p className="text-muted-foreground">
               94% of firms report using AI tools, yet 45% have no actual implementation. This maturity gap creates a narrow window for mid-sized design-build firms like Alleato to leapfrog competitors.
             </p>
           </Card>
           <Card className="p-6 border-l-4 border-l-orange-500">
-            <h3 className="text-xl font-semibold mb-2">The Urgency</h3>
+            <h4 className="mb-2">The Urgency</h4>
             <p className="text-muted-foreground">
               By 2027, AI capabilities will be table stakes for commercial construction bids. The 2-5 year lead of top competitors creates structural disadvantages that compound over time.
             </p>
           </Card>
         </div>
-        <Card className="p-8 bg-muted/30">
+        <div className="p-8 bg-muted/30">
           <blockquote className="text-lg italic">
             "The strategic imperative is decisive action now—not because Alleato must be first but because being in the middle of the pack by 2027 requires starting comprehensive implementation in 2025."
           </blockquote>
-        </Card>
+        </div>
       </section>
 
       {/* Key Statistics */}
