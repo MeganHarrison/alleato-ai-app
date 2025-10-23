@@ -42,7 +42,7 @@ app = FastAPI()
 
 # Configure CORS
 # Get allowed origins from environment variable or use defaults
-ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:8081').split(',')
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:3001,http://localhost:8081').split(',')
 
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +55,7 @@ app.add_middleware(
 # Simple in-memory session store
 sessions = {}
 
-@app.post("/api/chatkit/sessions")
+@app.post("/session")
 async def create_session(request: Request):
     """Create a new ChatKit session"""
     try:
