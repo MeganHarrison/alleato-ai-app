@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Agent Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #status { padding: 10px; background: #f0f0f0; margin: 10px 0; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        #response { padding: 10px; background: #e0f0e0; margin: 10px 0; min-height: 100px; }
+    </style>
+</head>
+<body>
+    <h1>Test Agent Chat</h1>
+    <div id="status">Ready</div>
+    
+    <button onclick="createSession()">1. Create Session</button>
+    <button onclick="sendMessage()">2. Send Message</button>
+    
+    <div id="response"></div>
+    
+    <script>
+        let clientSecret = null;
+        let sessionId = null;
+        const status = document.getElementById('status');
+        const response = document.getElementById('response');
+        
+        async function createSession() {
+            try {
+                status.textContent = 'Creating session...';
+                const res = await fetch('http://localhost:8001/api/chatkit/sessions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        workflow: { id: "wf_68f9ed871f3881909581687179fba37f01b09bb8edcbabda" }
+                    })
+                });
+                
+                const data = await res.json();
+                clientSecret = data.client_secret;
+                sessionId = data.session_id;
+                status.textContent = 'Session created: ' + sessionId;
+                console.log('Session data:', data);
+            } catch (err) {
+                status.textContent = 'Error: ' + err.message;
+            }
+        }
+        
+        async function sendMessage() {
+            try {
+                if (!clientSecret) {
+                    status.textContent = 'Create session first!';
+                    return;
+                }
+                
+                status.textContent = 'Sending message...';
+                response.textContent = '';
+                
+                const res = await fetch('http://localhost:8001/api/chatkit/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + clientSecret
+                    },
+                    body: JSON.stringify({
+                        message: 'Hello from test!'
+                    })
+                });
+                
+                if (!res.ok) {
+                    throw new Error('Response not ok: ' + res.statusText);
+                }
+                
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    response.textContent += chunk + '\n';
+                    
+                    // Parse SSE events
+                    const lines = chunk.split('\n');
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                console.log('Event:', data);
+                                
+                                if (data.type === 'message') {
+                                    status.textContent = 'Got response: ' + data.content.substring(0, 50) + '...';
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+                
+            } catch (err) {
+                status.textContent = 'Error: ' + err.message;
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>

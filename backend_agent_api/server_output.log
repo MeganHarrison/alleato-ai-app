@@ -1,0 +1,24 @@
+✓ Loaded environment variables from .env
+Starting ChatKit server with real Agent Builder workflow...
+INFO:     Started server process [82290]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:51: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat(),
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:58: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "expires_at": (datetime.utcnow().timestamp() + 3600)
+OpenAI Agents SDK not available, using fallback implementation
+✓ Real Agent Builder workflow loaded
+Starting Simple ChatKit Test Server on http://localhost:8001
+Workflow available: True
+INFO:     127.0.0.1:63617 - "POST /api/chatkit/sessions HTTP/1.1" 200 OK
+Processing message with auth: True
+INFO:     127.0.0.1:63619 - "POST /api/chatkit/message HTTP/1.1" 200 OK
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:115: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  yield f"data: {json.dumps({'type': 'ack', 'timestamp': datetime.utcnow().isoformat()})}\n\n"
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [82290]
+./start_server.sh: line 15: 82290 Terminated: 15          python simple_chatkit_test.py

@@ -1,0 +1,170 @@
+name: Deploy to DigitalOcean
+
+on:
+  workflow_call:
+    secrets:
+      DIGITALOCEAN_HOST:
+        required: true
+      DIGITALOCEAN_SSH_KEY:
+        required: true
+      DIGITALOCEAN_USERNAME:
+        required: true
+      DEPLOYMENT_PATH:
+        required: true
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+env:
+  DEPLOYMENT_TIMEOUT: 600  # 10 minutes
+
+jobs:
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'production' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Create SSH key
+      run: |
+        mkdir -p ~/.ssh/
+        # Write SSH key and ensure it ends with a newline
+        printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+        sudo chmod 600 ~/.ssh/deploy_key
+        
+        # Debug: Check if key ends with newline
+        echo "Key file ends with newline: $(if [[ $(tail -c1 ~/.ssh/deploy_key | wc -l) -gt 0 ]]; then echo 'YES'; else echo 'NO'; fi)"
+        echo "Key validation:"
+        ssh-keygen -lf ~/.ssh/deploy_key || echo "Key validation failed"
+      shell: bash
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+        
+    - name: Test SSH connection
+      run: |
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.DIGITALOCEAN_USERNAME }}@${{ secrets.DIGITALOCEAN_HOST }} "echo 'SSH connection successful'"
+          
+        
+    - name: Deploy to DigitalOcean
+      timeout-minutes: 10
+      run: |
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.DIGITALOCEAN_USERNAME }}@${{ secrets.DIGITALOCEAN_HOST }} << 'EOF'
+          export GITHUB_TOKEN='${{ secrets.GITHUB_TOKEN }}'
+          export GITHUB_USERNAME='${{ github.actor }}'
+          export DEPLOYMENT_PATH='${{ secrets.DEPLOYMENT_PATH }}'
+          
+          set -e
+          
+          echo "Starting deployment at $(date)"
+          
+          # Navigate to project directory
+          cd $DEPLOYMENT_PATH || { echo "Project directory not found at $DEPLOYMENT_PATH"; exit 1; }
+          
+          # Store current commit hash
+          OLD_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "none")
+          
+          # Configure git to use token for authentication
+          git config --local credential.helper store
+          echo "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com" > ~/.git-credentials
+          
+          # Pull latest changes
+          echo "Pulling latest changes..."
+          git fetch origin
+
+          echo "Deploying from main branch"
+          git reset --hard origin/main
+          
+          NEW_COMMIT=$(git rev-parse HEAD)
+          
+          if [ "$OLD_COMMIT" = "$NEW_COMMIT" ]; then
+            echo "No new changes to deploy (commit: $NEW_COMMIT)"
+          else
+            echo "Deploying changes from $OLD_COMMIT to $NEW_COMMIT"
+          fi
+          
+          # Navigate to deployment directory
+          cd 6_Agent_Deployment
+          
+          # Check if .env file exists
+          if [ ! -f .env ]; then
+            echo "ERROR: .env file not found. Please create it manually on the server first."
+            echo "The .env file should contain all sensitive environment variables."
+            exit 1
+          fi
+          
+          # Backup current .env file
+          cp .env .env.backup.$(date +%Y%m%d_%H%M%S)
+          
+          # Backup current deployment state
+          echo "Creating deployment backup..."
+          docker compose ps --format json > deployment_backup_$(date +%Y%m%d_%H%M%S).json || true
+          
+          # Stop current deployment
+          echo "Stopping current deployment..."
+          python3 deploy.py --down --type cloud || {
+            echo "Warning: Failed to stop deployment cleanly"
+            docker compose -f docker-compose.yml -f docker-compose.caddy.yml down || true
+          }
+          
+          # Clean up old images to save space
+          echo "Cleaning up old Docker images..."
+          docker image prune -f
+          
+          # Deploy new version
+          echo "Starting new deployment..."
+          python3 deploy.py --type cloud || {
+            echo "Deployment failed! Check logs for details"
+            exit 1
+          }
+          
+          # Basic deployment verification
+          echo "Deployment started successfully!"
+          echo "Checking container status..."
+          docker compose ps
+          
+          # Wait for services to initialize
+          echo "Waiting 30 seconds for services to start..."
+          sleep 30
+          
+          # Optional quick health check (non-blocking)
+          echo "Testing agent API availability..."
+          if timeout 15 curl -f http://localhost:8001/health >/dev/null 2>&1; then
+            echo "✅ Agent API is responding"
+          else
+            echo "⚠️  Agent API not yet available (may still be starting)"
+          fi
+          
+          # Clean up git credentials
+          rm -f ~/.git-credentials
+          
+          echo "Deployment completed successfully at $(date)"
+          echo "Deployed commit: $NEW_COMMIT"
+          
+          # Show final status
+          docker compose ps
+        EOF
+        
+    # SSH cleanup is handled automatically by the ssh-key-action
+        
+    - name: Send deployment notification
+      if: always()
+      run: |
+        if [ "${{ job.status }}" = "success" ]; then
+          echo "✅ Deployment completed successfully"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployed by: ${{ github.actor }}"
+          echo "Environment: ${{ inputs.environment || 'production' }}"
+        else
+          echo "❌ Deployment failed"
+          echo "Check the logs for more information"
+        fi

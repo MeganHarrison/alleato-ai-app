@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChatKit Test</title>
+    <script src="https://cdn.platform.openai.com/chatkit.js" async></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chatkit-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        #status {
+            margin: 20px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>OpenAI ChatKit Test</h1>
+    <div id="status">Loading...</div>
+    <div id="chatkit-container"></div>
+    
+    <script>
+        const status = document.getElementById('status');
+        const container = document.getElementById('chatkit-container');
+        
+        // Wait for ChatKit to load
+        window.addEventListener('load', async () => {
+            try {
+                status.textContent = 'Creating session...';
+                
+                // Create session with backend
+                const response = await fetch('http://localhost:8001/api/chatkit/sessions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        workflow: { 
+                            id: "wf_68f9ed871f3881909581687179fba37f01b09bb8edcbabda" 
+                        }
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to create session');
+                }
+                
+                const data = await response.json();
+                status.textContent = 'Session created: ' + data.session_id;
+                
+                // Create ChatKit element
+                const chatkit = document.createElement('openai-chatkit');
+                
+                // Try different ways to configure it
+                chatkit.setAttribute('workflow', 'wf_68f9ed871f3881909581687179fba37f01b09bb8edcbabda');
+                chatkit.setAttribute('session', data.client_secret);
+                
+                // Add to container
+                container.appendChild(chatkit);
+                
+                // Try configuring after adding to DOM
+                if (typeof chatkit.setOptions === 'function') {
+                    status.textContent += ' | Configuring...';
+                    chatkit.setOptions({
+                        api: {
+                            getClientSecret: async () => data.client_secret
+                        }
+                    });
+                }
+                
+                // Log any properties
+                console.log('ChatKit element:', chatkit);
+                console.log('ChatKit properties:', Object.keys(chatkit));
+                
+            } catch (error) {
+                status.textContent = 'Error: ' + error.message;
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{
+  "supported_mime_types": [
+    "text/plain",
+    "text/csv",
+    "text/markdown",
+    "application/pdf",
+    "application/vnd.google-apps.document",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ],
+  "export_mime_types": {
+    "application/vnd.google-apps.document": "text/plain",
+    "application/vnd.google-apps.spreadsheet": "text/csv",
+    "application/vnd.google-apps.presentation": "text/plain"
+  },
+  "tabular_mime_types": [
+    "csv",
+    "xlsx",
+    "text/csv",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.google-apps.spreadsheet"
+  ],
+  "text_processing": {
+    "default_chunk_size": 1500,
+    "default_chunk_overlap": 300,
+    "min_chunk_size": 800,
+    "max_chunk_size": 2500
+  },
+  "adaptive_chunking": {
+    "max_chunk_size": 1500,
+    "min_chunk_size": 800,
+    "speaker_overlap": 2,
+    "semantic_threshold": 0.7,
+    "enable_meeting_transcript_detection": true,
+    "enable_structured_document_detection": true,
+    "enable_conversational_detection": true
+  },
+  "meeting_transcript_processing": {
+    "speaker_patterns": [
+      "^([A-Z][a-zA-Z\\s]+[a-zA-Z]):\\s*(.+)$",
+      "^\\[?([A-Z_]+\\s?\\d*)\\]?:\\s*(.+)$",
+      "^\\[([^\\]]+)\\]\\s*([A-Za-z].+)$",
+      "^([A-Za-z\\s]+)\\s*-\\s*(.+)$"
+    ],
+    "context_overlap_turns": 1,
+    "max_turn_length": 500,
+    "preserve_speaker_context": true,
+    "extract_speaker_metadata": true
+  },
+  "semantic_chunking": {
+    "similarity_threshold": 0.7,
+    "max_sentences_per_chunk": 20,
+    "sentence_overlap": 1,
+    "use_sentence_embeddings": true,
+    "fallback_to_paragraph_chunking": true
+  },
+  "structured_document_processing": {
+    "preserve_headers": true,
+    "section_aware_chunking": true,
+    "max_section_size": 1500,
+    "header_patterns": [
+      "^#{1,6}\\s+.+$",
+      "^\\d+\\.\\s+.+$",
+      "^[-*+]\\s+.+$",
+      "^[A-Z][A-Z\\s]+$"
+    ]
+  },
+  "conversational_processing": {
+    "question_answer_detection": true,
+    "dialogue_preservation": true,
+    "speaker_turn_chunking": true,
+    "context_window": 2
+  },
+  "embedding_enhancement": {
+    "batch_size": 100,
+    "include_content_stats": true,
+    "include_speaker_metadata": true,
+    "include_chunk_type_metadata": true,
+    "calculate_content_diversity": true
+  },
+  "rag_search_strategies": {
+    "semantic_search": {
+      "default_match_count": 6,
+      "similarity_threshold": 0.7,
+      "enable_query_expansion": true,
+      "business_context_synonyms": {
+        "project": ["initiative", "effort", "work", "task"],
+        "issue": ["problem", "challenge", "concern", "blocker"],
+        "budget": ["cost", "expense", "financial", "money"],
+        "timeline": ["schedule", "deadline", "timeframe", "duration"],
+        "client": ["customer", "stakeholder", "user"],
+        "meeting": ["discussion", "call", "session", "conference"],
+        "ASRS": ["automated storage", "warehouse automation", "retrieval system"],
+        "sprinkler": ["fire protection", "suppression system", "safety system"]
+      }
+    },
+    "hybrid_search": {
+      "default_match_count": 8,
+      "semantic_weight": 0.6,
+      "keyword_weight": 0.4,
+      "enable_stemming": true,
+      "stop_words": ["the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by"]
+    },
+    "recent_documents": {
+      "default_days_back": 7,
+      "max_documents": 10,
+      "group_by_date": true,
+      "content_type_filtering": true
+    },
+    "speaker_search": {
+      "fuzzy_matching": true,
+      "context_window": 2,
+      "include_speaker_statistics": true
+    },
+    "auto_strategy_detection": {
+      "time_indicators": ["recent", "last", "yesterday", "today", "this week", "past", "latest", "current"],
+      "conceptual_indicators": ["why", "how", "what", "impact", "analysis", "trend", "pattern", "strategy"],
+      "specific_indicators": ["\"", "'", "#", "ID", "number", "code"],
+      "default_strategy": "hybrid"
+    }
+  },
+  "performance_optimization": {
+    "enable_chunking_cache": true,
+    "max_cache_size": 1000,
+    "enable_embedding_batch_processing": true,
+    "parallel_processing_threshold": 10,
+    "memory_usage_limit_mb": 512
+  },
+  "debugging": {
+    "log_chunking_decisions": false,
+    "log_search_strategy_selection": false,
+    "include_processing_metadata": true,
+    "save_intermediate_results": false
+  }
+}

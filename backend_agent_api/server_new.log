@@ -1,0 +1,39 @@
+✓ Loaded environment variables from .env
+Starting ChatKit server with real Agent Builder workflow...
+INFO:     Started server process [82835]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:64: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat(),
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:71: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "expires_at": (datetime.utcnow().timestamp() + 3600)
+OpenAI Agents SDK not available, using fallback implementation
+✓ Real Agent Builder workflow loaded
+✓ OpenAI client initialized
+Starting Simple ChatKit Test Server on http://localhost:8001
+Workflow available: True
+INFO:     127.0.0.1:64674 - "POST /api/chatkit/sessions HTTP/1.1" 200 OK
+Processing message with auth: True
+INFO:     127.0.0.1:64676 - "POST /api/chatkit/message HTTP/1.1" 200 OK
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:128: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  yield f"data: {json.dumps({'type': 'ack', 'timestamp': datetime.utcnow().isoformat()})}\n\n"
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:209: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  yield f"data: {json.dumps({'type': 'done', 'timestamp': datetime.utcnow().isoformat()})}\n\n"
+Using direct OpenAI for message: What is Alleato AI?
+INFO:     127.0.0.1:65029 - "OPTIONS /api/chatkit/sessions HTTP/1.1" 200 OK
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:64: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "created_at": datetime.utcnow().isoformat(),
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:71: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "expires_at": (datetime.utcnow().timestamp() + 3600)
+INFO:     127.0.0.1:65029 - "POST /api/chatkit/sessions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65029 - "OPTIONS /api/chatkit/message HTTP/1.1" 200 OK
+Invalid session: test-session
+Available sessions: ['cs_3922ba7c-ddf9-4b03-8c91-7a955ff5f7c7_106d7254', 'cs_28ece096-fcc0-4848-b18a-4b6358df1c73_cb0bbb26']
+Processing message with auth: True
+INFO:     127.0.0.1:65031 - "POST /api/chatkit/message HTTP/1.1" 200 OK
+/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/simple_chatkit_test.py:128: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  yield f"data: {json.dumps({'type': 'ack', 'timestamp': datetime.utcnow().isoformat()})}\n\n"
+Using direct OpenAI for message: How does this work?
+Processing message with auth: True
+INFO:     127.0.0.1:49587 - "POST /api/chatkit/message HTTP/1.1" 200 OK

@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/meganharrison/Documents/github/ai-agent-mastery3/6_Agent_Deployment/frontend/logs/.233b53b354da24978639a0e99c5f43bae81e5a16-audit.json",
+    "files": [
+        {
+            "date": 1758647801594,
+            "name": "/Users/meganharrison/Documents/github/ai-agent-mastery3/6_Agent_Deployment/frontend/logs/mcp-puppeteer-2025-09-23.log",
+            "hash": "5011dfa02176cabda77ed47d41c5d37eefc85701c6212cc36d23a8c4ce3c60c4"
+        },
+        {
+            "date": 1759009676509,
+            "name": "/Users/meganharrison/Documents/github/ai-agent-mastery3/6_Agent_Deployment/frontend/logs/mcp-puppeteer-2025-09-27.log",
+            "hash": "6d79486e6d8370eae066271d876b611a0544dfb0a6469da27ffe6e3a482bf2c8"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,98 @@
+name: Docker Container Builds
+
+on:
+  workflow_call:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  # Mock environment variables for Docker builds
+  LLM_PROVIDER: openai
+  LLM_BASE_URL: https://api.openai.com/v1
+  LLM_API_KEY: mock-api-key-for-testing
+  LLM_CHOICE: gpt-4o-mini
+  VISION_LLM_CHOICE: gpt-4o-mini
+  EMBEDDING_PROVIDER: openai
+  EMBEDDING_BASE_URL: https://api.openai.com/v1
+  EMBEDDING_API_KEY: mock-embedding-key-for-testing
+  EMBEDDING_MODEL_CHOICE: text-embedding-3-small
+  DATABASE_URL: postgresql://mock:mock@localhost:5432/mock
+  SUPABASE_URL: https://mock-project.supabase.co
+  SUPABASE_SERVICE_KEY: mock-service-key-for-testing
+  SUPABASE_ANON_KEY: mock-anon-key-for-testing
+  BRAVE_API_KEY: mock-brave-key-for-testing
+  SEARXNG_BASE_URL: http://localhost:8080
+  ENVIRONMENT: development
+  RAG_PIPELINE_TYPE: local
+  RUN_MODE: continuous
+  VITE_SUPABASE_URL: https://mock-project.supabase.co
+  VITE_SUPABASE_ANON_KEY: mock-anon-key-for-testing
+  VITE_AGENT_ENDPOINT: http://localhost:8001/api/pydantic-agent
+  VITE_ENABLE_STREAMING: true
+
+jobs:
+  docker-compose-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Agent API container
+      run: |
+        cd 6_Agent_Deployment/backend_agent_api
+        echo "Building Agent API container..."
+        docker build --no-cache --tag agent-api:ci-test .
+        echo "✅ Agent API container built successfully"
+        
+    - name: Build RAG Pipeline container
+      run: |
+        cd 6_Agent_Deployment/backend_rag_pipeline
+        echo "Building RAG Pipeline container..."
+        docker build --no-cache --tag rag-pipeline:ci-test .
+        echo "✅ RAG Pipeline container built successfully"
+        
+    - name: Build Frontend container
+      run: |
+        cd 6_Agent_Deployment/frontend
+        echo "Building Frontend container..."
+        docker build --no-cache --tag frontend:ci-test .
+        echo "✅ Frontend container built successfully"
+        
+    - name: Verify container images
+      run: |
+        echo "Verifying all container images were created..."
+        
+        # Check that all images exist
+        if ! docker image inspect agent-api:ci-test >/dev/null 2>&1; then
+          echo "❌ Agent API image not found!"
+          exit 1
+        fi
+        
+        if ! docker image inspect rag-pipeline:ci-test >/dev/null 2>&1; then
+          echo "❌ RAG Pipeline image not found!"
+          exit 1
+        fi
+        
+        if ! docker image inspect frontend:ci-test >/dev/null 2>&1; then
+          echo "❌ Frontend image not found!"
+          exit 1
+        fi
+        
+        echo "✅ All container images built and verified successfully"
+        
+        # Show image sizes for reference
+        echo "Container image sizes:"
+        docker images --format "table {{.Repository}}:{{.Tag}}\t{{.Size}}" | grep ci-test
+        
+    - name: Cleanup
+      if: always()
+      run: |
+        cd 6_Agent_Deployment
+        docker compose down -v
+        docker system prune -f

@@ -1,0 +1,170 @@
+name: Security Analysis
+
+on:
+  workflow_call:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Run weekly on Mondays at 2 AM UTC
+  workflow_dispatch:
+
+jobs:
+  bandit-python-security:
+    name: Python Security (Bandit)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        
+    - name: Install Bandit
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit[toml] bandit-sarif-formatter
+        
+    - name: Run Bandit security scan on Agent API
+      run: |
+        cd 6_Agent_Deployment/backend_agent_api
+        bandit -r . -f json -o bandit-agent-api.json || true
+        bandit -r . -f txt | tee bandit-agent-api.txt || true
+        
+    - name: Run Bandit security scan on RAG Pipeline
+      run: |
+        cd 6_Agent_Deployment/backend_rag_pipeline
+        bandit -r . -f json -o bandit-rag-pipeline.json \
+          --exclude=venv,venv_linux,__pycache__ || true
+        bandit -r . -f txt \
+          --exclude=venv,venv_linux,__pycache__ | tee bandit-rag-pipeline.txt || true
+          
+    - name: Generate SARIF output for GitHub
+      run: |
+        cd 6_Agent_Deployment/backend_agent_api
+        bandit -r . -f sarif -o bandit-agent-api.sarif || true
+        
+        cd ../backend_rag_pipeline
+        bandit -r . -f sarif -o bandit-rag-pipeline.sarif \
+          --exclude=venv,venv_linux,__pycache__ || true
+          
+    - name: Check for high severity issues
+      run: |
+        # Check Agent API results
+        if [ -f 6_Agent_Deployment/backend_agent_api/bandit-agent-api.json ]; then
+          HIGH_ISSUES=$(jq '[.results[] | select(.issue_severity == "HIGH")] | length' 6_Agent_Deployment/backend_agent_api/bandit-agent-api.json)
+          MEDIUM_ISSUES=$(jq '[.results[] | select(.issue_severity == "MEDIUM")] | length' 6_Agent_Deployment/backend_agent_api/bandit-agent-api.json)
+          
+          echo "Agent API - High severity issues: $HIGH_ISSUES"
+          echo "Agent API - Medium severity issues: $MEDIUM_ISSUES"
+          
+          if [ "$HIGH_ISSUES" -gt 0 ]; then
+            echo "❌ High severity security issues found in Agent API!"
+            jq -r '.results[] | select(.issue_severity == "HIGH") | "HIGH: \(.test_id) in \(.filename):\(.line_number) - \(.issue_text)"' 6_Agent_Deployment/backend_agent_api/bandit-agent-api.json
+            exit 1
+          fi
+        fi
+        
+        # Check RAG Pipeline results
+        if [ -f 6_Agent_Deployment/backend_rag_pipeline/bandit-rag-pipeline.json ]; then
+          HIGH_ISSUES=$(jq '[.results[] | select(.issue_severity == "HIGH")] | length' 6_Agent_Deployment/backend_rag_pipeline/bandit-rag-pipeline.json)
+          MEDIUM_ISSUES=$(jq '[.results[] | select(.issue_severity == "MEDIUM")] | length' 6_Agent_Deployment/backend_rag_pipeline/bandit-rag-pipeline.json)
+          
+          echo "RAG Pipeline - High severity issues: $HIGH_ISSUES"
+          echo "RAG Pipeline - Medium severity issues: $MEDIUM_ISSUES"
+          
+          if [ "$HIGH_ISSUES" -gt 0 ]; then
+            echo "❌ High severity security issues found in RAG Pipeline!"
+            jq -r '.results[] | select(.issue_severity == "HIGH") | "HIGH: \(.test_id) in \(.filename):\(.line_number) - \(.issue_text)"' 6_Agent_Deployment/backend_rag_pipeline/bandit-rag-pipeline.json
+            exit 1
+          fi
+        fi
+        
+        echo "✅ No high severity Python security issues detected"
+        
+    - name: Upload Bandit results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: bandit-results
+        path: |
+          6_Agent_Deployment/backend_agent_api/bandit-*
+          6_Agent_Deployment/backend_rag_pipeline/bandit-*
+        retention-days: 30
+
+  eslint-security:
+    name: Frontend Security (ESLint)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: '6_Agent_Deployment/frontend/package-lock.json'
+        
+    - name: Install dependencies and security plugins
+      run: |
+        cd 6_Agent_Deployment/frontend
+        npm ci
+        # Install ESLint security plugins if not already present
+        npm install --save-dev eslint-plugin-security eslint-plugin-react-hooks @typescript-eslint/eslint-plugin || true
+        
+    - name: Run ESLint security scan
+      run: |
+        cd 6_Agent_Deployment/frontend
+        # Run ESLint with security focus
+        npx eslint . \
+          --ext .js,.jsx,.ts,.tsx \
+          --format json \
+          --output-file eslint-security.json || true
+          
+        # Generate human-readable output
+        npx eslint . \
+          --ext .js,.jsx,.ts,.tsx \
+          --format unix | tee eslint-security.txt || true
+          
+    - name: Check for security issues
+      run: |
+        cd 6_Agent_Deployment/frontend
+        
+        if [ -f eslint-security.json ]; then
+          # Count error-level issues (security problems)
+          ERROR_COUNT=$(jq '[.[] | .messages[] | select(.severity == 2)] | length' eslint-security.json)
+          WARNING_COUNT=$(jq '[.[] | .messages[] | select(.severity == 1)] | length' eslint-security.json)
+          
+          echo "ESLint errors found: $ERROR_COUNT"
+          echo "ESLint warnings found: $WARNING_COUNT"
+          
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "❌ ESLint errors found in frontend code!"
+            jq -r '.[] | .messages[] | select(.severity == 2) | "ERROR: \(.ruleId // "unknown") in \(.filePath) line \(.line) - \(.message)"' eslint-security.json
+            exit 1
+          fi
+          
+          if [ "$WARNING_COUNT" -gt 0 ]; then
+            echo "⚠️ ESLint warnings found:"
+            jq -r '.[] | .messages[] | select(.severity == 1) | "WARNING: \(.ruleId // "unknown") in \(.filePath) line \(.line) - \(.message)"' eslint-security.json
+          fi
+          
+          echo "✅ No critical frontend security issues detected"
+        else
+          echo "No ESLint results file found"
+        fi
+        
+    - name: Upload ESLint results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: eslint-security-results
+        path: |
+          6_Agent_Deployment/frontend/eslint-security.*
+        retention-days: 30

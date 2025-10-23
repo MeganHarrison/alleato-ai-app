@@ -1,0 +1,149 @@
+services:
+  # Backend Agent API Service
+  - type: web
+    name: dynamous-agent-api
+    runtime: docker
+    rootDir: 6_Agent_Deployment/backend_agent_api
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    plan: starter  # $7/month - includes 512MB RAM, 0.5 CPU
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        sync: false  # Render will automatically set this
+      - key: PYTHON_UNBUFFERED
+        value: "1"
+    # Environment variable group for secrets
+    envVarGroups:
+      - agent-api-env
+    # Auto-deploy configuration
+    autoDeploy: true  # Deploy on every push to main branch
+    
+  # RAG Pipeline Background Worker
+  - type: worker
+    name: dynamous-rag-pipeline
+    runtime: docker
+    rootDir: 6_Agent_Deployment/backend_rag_pipeline
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    plan: starter  # $7/month - includes 512MB RAM, 0.5 CPU
+    envVars:
+      - key: PYTHON_UNBUFFERED
+        value: "1"
+      - key: RUN_MODE
+        value: continuous
+      - key: RAG_PIPELINE_TYPE
+        value: supabase_storage
+    # Environment variable group for secrets
+    envVarGroups:
+      - rag-pipeline-env
+    autoDeploy: true
+
+  # Frontend Static Site
+  - type: web
+    name: dynamous-frontend
+    runtime: static
+    rootDir: 6_Agent_Deployment/frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+    routes:
+      # Handle client-side routing for React
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # Build-time environment variables for Vite
+      - key: NODE_ENV
+        value: production
+    # Environment variable group for build-time secrets
+    envVarGroups:
+      - frontend-env
+    autoDeploy: true
+
+# Environment Variable Groups
+envVarGroups:
+  # Frontend Environment Variables
+  - name: frontend-env
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false  # Will be set manually
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_AGENT_ENDPOINT
+        sync: false
+      - key: VITE_ENABLE_STREAMING
+        value: "true"
+  
+  # Agent API Environment Variables
+  - name: agent-api-env
+    envVars:
+      # LLM Configuration
+      - key: LLM_PROVIDER
+        sync: false
+      - key: LLM_BASE_URL
+        sync: false
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_CHOICE
+        sync: false
+      - key: VISION_LLM_CHOICE
+        sync: false
+      
+      # Embedding Configuration
+      - key: EMBEDDING_PROVIDER
+        sync: false
+      - key: EMBEDDING_BASE_URL
+        sync: false
+      - key: EMBEDDING_API_KEY
+        sync: false
+      - key: EMBEDDING_MODEL_CHOICE
+        sync: false
+      
+      # Database Configuration
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      
+      # Web Search Configuration
+      - key: BRAVE_API_KEY
+        sync: false
+      
+      # Optional Configuration
+      - key: ENVIRONMENT
+        value: production
+      - key: ENABLE_LANGFUSE
+        value: "false"
+  
+  # RAG Pipeline Environment Variables
+  - name: rag-pipeline-env
+    envVars:
+      # Database Configuration
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      
+      # Embedding Configuration
+      - key: EMBEDDING_PROVIDER
+        sync: false
+      - key: EMBEDDING_BASE_URL
+        sync: false
+      - key: EMBEDDING_API_KEY
+        sync: false
+      - key: EMBEDDING_MODEL_CHOICE
+        sync: false
+      
+      # Environment
+      - key: ENVIRONMENT
+        value: production

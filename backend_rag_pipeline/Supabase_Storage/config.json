@@ -1,0 +1,43 @@
+{
+  "supported_mime_types": [
+    "application/pdf",
+    "text/plain",
+    "text/html",
+    "text/csv",
+    "text/markdown",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/json",
+    "audio/mpeg",
+    "audio/wav",
+    "application/x-transcript",
+    "video/mp4",
+    "video/webm"
+  ],
+  "text_processing": {
+    "default_chunk_size": 400,
+    "default_chunk_overlap": 0,
+    "min_chunk_size": 100,
+    "max_chunk_size": 1000
+  },
+  "rate_limit": {
+    "max_files_per_run": 100,
+    "delay_between_files": 0.1
+  },
+  "meetings_bucket": "meetings",
+  "documents_bucket": "documents",
+  "backfill": {
+    "enabled": false,
+    "batch_size": 50,
+    "initial_delay": 5
+  },
+  "security": {
+    "verify_access": true,
+    "respect_rls": true
+  },
+  "logging": {
+    "level": "INFO",
+    "structured": true
+  },
+  "last_check_time": "2024-01-01T00:00:00.000000Z"
+}

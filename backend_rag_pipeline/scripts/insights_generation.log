@@ -1,0 +1,73 @@
+2025-09-27 07:36:40,000 - INFO - ============================================================
+2025-09-27 07:36:40,000 - INFO - AUTOMATED INSIGHTS GENERATION STARTED
+2025-09-27 07:36:40,000 - INFO - ============================================================
+2025-09-27 07:36:40,513 - INFO - HTTP Request: GET https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_metadata?select=id&content=not.is.null "HTTP/2 200 OK"
+2025-09-27 07:36:40,628 - INFO - HTTP Request: GET https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights?select=document_id "HTTP/2 200 OK"
+2025-09-27 07:36:40,628 - INFO - Total documents: 646
+2025-09-27 07:36:40,628 - INFO - Documents with insights: 16
+2025-09-27 07:36:40,628 - INFO - Documents to process: 630
+2025-09-27 07:36:44,112 - INFO - HTTP Request: GET https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_metadata?select=id%2Ctitle%2Ccontent%2Cdate%2Cparticipants%2Csummary&content=not.is.null&order=created_at.asc "HTTP/2 200 OK"
+2025-09-27 07:36:44,808 - INFO - Processing 50 documents in batches of 10
+2025-09-27 07:36:44,809 - INFO - 
+Processing batch 1 (10 documents)
+2025-09-27 07:36:56,870 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:36:56,875 - INFO - Generated 5 insights for document: 2025-09-22 Westfield Volleyball Finance Option
+2025-09-27 07:36:57,166 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:36:57,251 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:36:57,332 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:36:57,413 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:36:57,501 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:08,379 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:37:08,389 - INFO - Generated 5 insights for document: AJ Weekly Update
+2025-09-27 07:37:08,612 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:08,696 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:08,783 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:08,867 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:08,961 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:17,289 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:37:17,296 - INFO - Generated 4 insights for document: Alleato Group LinkedIn SMM Updates
+2025-09-27 07:37:17,536 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:17,630 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:17,716 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:17,803 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:27,466 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:37:27,468 - INFO - Generated 4 insights for document: Daily TB
+2025-09-27 07:37:27,613 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:27,694 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:27,791 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:27,868 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:38,437 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:37:38,440 - INFO - Generated 5 insights for document: Executive Weekly meeting
+2025-09-27 07:37:38,671 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:38,758 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:38,845 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:38,932 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:39,019 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:51,448 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:37:51,451 - INFO - Generated 5 insights for document: GW Bloomington Morning Meeting
+2025-09-27 07:37:51,589 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:51,676 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:51,762 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:51,848 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:37:51,932 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:06,131 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:38:06,137 - INFO - Generated 5 insights for document: Vermilian Proposal Review
+2025-09-27 07:38:06,451 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:06,541 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:06,635 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:06,728 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:06,821 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:20,960 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:38:20,964 - INFO - Generated 5 insights for document: Weekly Ops Update - Kebba
+2025-09-27 07:38:21,103 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:21,191 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:21,281 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:21,375 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:21,468 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:37,183 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-27 07:38:37,187 - INFO - Generated 5 insights for document: Weekly Report Content
+2025-09-27 07:38:37,334 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:37,419 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:37,503 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:37,579 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"
+2025-09-27 07:38:37,661 - INFO - HTTP Request: POST https://lgveqfnpkxvzbnnwuled.supabase.co/rest/v1/document_insights "HTTP/2 201 Created"

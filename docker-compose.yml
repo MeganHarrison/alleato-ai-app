@@ -1,0 +1,93 @@
+services:
+  # AI Agent API Service
+  agent-api:
+    build: ./backend_agent_api
+    container_name: dynamous-agent-api
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      # LLM Configuration
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://api.openai.com/v1}
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_CHOICE=${LLM_CHOICE:-gpt-4o-mini}
+      - VISION_LLM_CHOICE=${VISION_LLM_CHOICE:-gpt-4o-mini}
+      # Embedding Configuration
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-openai}
+      - EMBEDDING_BASE_URL=${EMBEDDING_BASE_URL:-https://api.openai.com/v1}
+      - EMBEDDING_API_KEY=${EMBEDDING_API_KEY}
+      - EMBEDDING_MODEL_CHOICE=${EMBEDDING_MODEL_CHOICE:-text-embedding-3-small}
+      # Database Configuration
+      - DATABASE_URL=${DATABASE_URL}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      # Web Search Configuration
+      - BRAVE_API_KEY=${BRAVE_API_KEY}
+      - SEARXNG_BASE_URL=${SEARXNG_BASE_URL}
+      # Agent Observability Configuration (optional)
+      - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY}
+      - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}
+      - LANGFUSE_HOST=${LANGFUSE_HOST:-https://cloud.langfuse.com}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # RAG Pipeline Service
+  rag-pipeline:
+    build: ./backend_rag_pipeline
+    container_name: dynamous-rag-pipeline
+    restart: always
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      # Pipeline Configuration
+      - RAG_PIPELINE_TYPE=${RAG_PIPELINE_TYPE:-local}
+      - RUN_MODE=${RUN_MODE:-continuous}
+      - RAG_PIPELINE_ID=${RAG_PIPELINE_ID}
+      # Database Configuration (same as agent)
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      # Embedding Configuration (same as agent)
+      - EMBEDDING_BASE_URL=${EMBEDDING_BASE_URL:-https://api.openai.com/v1}
+      - EMBEDDING_API_KEY=${EMBEDDING_API_KEY}
+      - EMBEDDING_MODEL_CHOICE=${EMBEDDING_MODEL_CHOICE:-text-embedding-3-small}
+      # Google Drive Configuration
+      - GOOGLE_DRIVE_CREDENTIALS_JSON=${GOOGLE_DRIVE_CREDENTIALS_JSON}
+      - RAG_WATCH_FOLDER_ID=${RAG_WATCH_FOLDER_ID}
+      # Local Files Configuration
+      - RAG_WATCH_DIRECTORY=${RAG_WATCH_DIRECTORY}
+    volumes:
+      # Mount local files directory for local pipeline
+      - ./rag-documents:/app/Local_Files/data
+      # Mount Google Drive credentials if using OAuth2 (optional)
+      - ./google-credentials:/app/Google_Drive/credentials
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        NEXT_PUBLIC_AGENT_ENDPOINT: ${NEXT_PUBLIC_AGENT_ENDPOINT:-http://agent-api:8001/api/pydantic-agent}
+        NEXT_PUBLIC_ENABLE_STREAMING: ${NEXT_PUBLIC_ENABLE_STREAMING:-true}
+        NEXT_PUBLIC_LANGFUSE_HOST_WITH_PROJECT: ${NEXT_PUBLIC_LANGFUSE_HOST_WITH_PROJECT}
+    container_name: dynamous-frontend
+    restart: always
+    ports:
+      - "8082:3000"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    depends_on:
+      - agent-api
+
+volumes:
+  rag-documents:

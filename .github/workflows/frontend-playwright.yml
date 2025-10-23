@@ -1,0 +1,78 @@
+name: Frontend E2E Tests (Playwright)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: 'Node.js version to use'
+        required: false
+        default: '18'
+        type: string
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  # Mock environment variables for E2E testing
+  VITE_SUPABASE_URL: https://mock-project.supabase.co
+  VITE_SUPABASE_ANON_KEY: mock-anon-key-for-testing
+  VITE_AGENT_ENDPOINT: http://localhost:8001/api/pydantic-agent
+  VITE_ENABLE_STREAMING: true
+
+jobs:
+  playwright-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js ${{ inputs.node-version || '18' }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version || '18' }}
+        cache: 'npm'
+        cache-dependency-path: '6_Agent_Deployment/frontend/package-lock.json'
+        
+    - name: Install dependencies
+      run: |
+        cd 6_Agent_Deployment/frontend
+        npm ci
+        
+    - name: Install Playwright browsers
+      run: |
+        cd 6_Agent_Deployment/frontend
+        npx playwright install --with-deps
+        
+    - name: Create test environment file
+      run: |
+        cd 6_Agent_Deployment/frontend
+        cat > .env.test << EOF
+        VITE_SUPABASE_URL=${{ env.VITE_SUPABASE_URL }}
+        VITE_SUPABASE_ANON_KEY=${{ env.VITE_SUPABASE_ANON_KEY }}
+        VITE_AGENT_ENDPOINT=${{ env.VITE_AGENT_ENDPOINT }}
+        VITE_ENABLE_STREAMING=${{ env.VITE_ENABLE_STREAMING }}
+        EOF
+        
+    - name: Run Playwright tests
+      run: |
+        cd 6_Agent_Deployment/frontend
+        npm run test
+        
+    - name: Upload Playwright report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: 6_Agent_Deployment/frontend/playwright-report/
+        retention-days: 30
+        
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-test-results
+        path: 6_Agent_Deployment/frontend/test-results/
+        retention-days: 30

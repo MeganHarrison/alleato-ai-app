@@ -1,0 +1,103 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Deploy after tests pass (main branch only)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  python-tests:
+    name: Python Unit Tests
+    uses: ./.github/workflows/python-unit-tests.yml
+    with:
+      python-version: '3.12'
+  
+  backend-linting:
+    name: Backend Linting (Flake8)
+    uses: ./.github/workflows/backend-flake8.yml
+    with:
+      python-version: '3.12'
+  
+  frontend-linting:
+    name: Frontend Linting (ESLint)
+    uses: ./.github/workflows/frontend-eslint.yml
+    with:
+      node-version: '18'
+  
+  security-analysis:
+    name: Security Analysis
+    uses: ./.github/workflows/security-analysis.yml
+  
+  frontend-e2e:
+    name: Frontend E2E Tests
+    uses: ./.github/workflows/frontend-playwright.yml
+    with:
+      node-version: '18'
+    needs: [frontend-linting]  # Run E2E after linting passes
+  
+  docker-builds:
+    name: Docker Container Builds
+    uses: ./.github/workflows/docker-builds.yml
+    needs: [python-tests, backend-linting]  # Only build containers if tests and linting pass
+    
+  # Check if all tests passed
+  tests-passed:
+    name: All Tests Passed
+    runs-on: ubuntu-latest
+    needs: [python-tests, backend-linting, frontend-linting, frontend-e2e, docker-builds]
+    steps:
+      - name: Tests Summary
+        run: |
+          echo "✅ All required tests passed successfully!"
+          echo "Python tests: ${{ needs.python-tests.result }}"
+          echo "Backend linting: ${{ needs.backend-linting.result }}"
+          echo "Frontend linting: ${{ needs.frontend-linting.result }}"
+          echo "Frontend E2E: ${{ needs.frontend-e2e.result }}"
+          echo "Docker builds: ${{ needs.docker-builds.result }}"
+          
+  # Deploy to DigitalOcean (on main branch pushes)
+  # This step is commented out so I don't have to have a machine up 24/7 for the course material :)
+  # deploy:
+  #   name: Deploy to Production
+  #   needs: [tests-passed]
+  #   if: |
+  #     github.ref == 'refs/heads/main' && 
+  #     github.event_name == 'push' &&
+  #     (github.event.inputs.deploy != 'false')
+  #   uses: ./.github/workflows/deploy-to-digitalocean.yml
+  #   secrets:
+  #     DIGITALOCEAN_HOST: ${{ secrets.DIGITALOCEAN_HOST }}
+  #     DIGITALOCEAN_SSH_KEY: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+  #     DIGITALOCEAN_USERNAME: ${{ secrets.DIGITALOCEAN_USERNAME }}
+  #     DEPLOYMENT_PATH: ${{ secrets.DEPLOYMENT_PATH }}
+      
+  # Deployment status notification
+  # deployment-status:
+  #   name: Deployment Status
+  #   runs-on: ubuntu-latest
+  #   needs: [deploy]
+  #   if: always() && github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   steps:
+  #     - name: Check deployment status
+  #       run: |
+  #         if [ "${{ needs.deploy.result }}" = "success" ]; then
+  #           echo "🚀 Deployment to DigitalOcean completed successfully!"
+  #           echo "Commit: ${{ github.sha }}"
+  #           echo "Deployed by: ${{ github.actor }}"
+  #         elif [ "${{ needs.deploy.result }}" = "skipped" ]; then
+  #           echo "⏭️ Deployment was skipped"
+  #         else
+  #           echo "❌ Deployment failed or was cancelled"
+  #           exit 1
+  #         fi
