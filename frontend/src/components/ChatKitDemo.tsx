@@ -69,7 +69,7 @@ export default function ChatKitDemo() {
                   <div>
                     <h4 className="font-medium text-sm">Knowledge Base Search</h4>
                     <p className="text-sm text-muted-foreground">
-                      Access your organization's documents and resources
+                      Access your organization’s documents and resources
                     </p>
                   </div>
                 </div>

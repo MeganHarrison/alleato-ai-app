@@ -40,7 +40,7 @@ export default function ArchitecturePage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p>
-                  This is your <strong>AI-Powered Business Intelligence Platform</strong>. Think of it as your company's digital brain that:
+                  This is your <strong>AI-Powered Business Intelligence Platform</strong>. Think of it as your company’s digital brain that:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Processes and understands all your business documents</li>
@@ -102,7 +102,7 @@ export default function ArchitecturePage() {
                       </div>
                       <div>
                         <h3 className="font-semibold">Web Interface (Frontend)</h3>
-                        <p className="text-sm text-muted-foreground">What you're looking at right now</p>
+                        <p className="text-sm text-muted-foreground">What you’re looking at right now</p>
                       </div>
                     </div>
                     <Badge variant="default" className="bg-green-500">

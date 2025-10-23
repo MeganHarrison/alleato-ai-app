@@ -39,13 +39,13 @@ export const MessageList = ({ messages, isLoading, isGeneratingResponse = false,
           <div className="grid gap-2 text-sm">
             <p className="font-medium">Try asking:</p>
             <div className="bg-secondary/50 p-3 rounded-md">
-              "Explain how quantum computing works"
+              &ldquo;Explain how quantum computing works&rdquo;
             </div>
             <div className="bg-secondary/50 p-3 rounded-md">
-              "Write a short story about a robot learning to paint"
+              &ldquo;Write a short story about a robot learning to paint&rdquo;
             </div>
             <div className="bg-secondary/50 p-3 rounded-md">
-              "What are the best practices for FastAPI performance optimization?"
+              &ldquo;What are the best practices for FastAPI performance optimization?&rdquo;
             </div>
           </div>
         </div>
