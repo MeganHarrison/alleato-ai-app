@@ -41,7 +41,7 @@ export default async function SalesPage() {
   const columns = ["product_id", "customer_id", "quantity", "total", "date"];
 
   return (
-    <div className="w-[90%] mx-auto">
+    <>
       <PageHeader
         title="Sales"
         description="Track your sales and revenue"
@@ -51,6 +51,6 @@ export default async function SalesPage() {
         }}
       />
       <DataTable data={sampleData} columns={columns} />
-    </div>
+    </>
   );
 }

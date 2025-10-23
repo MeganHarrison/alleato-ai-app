@@ -1,7 +1,7 @@
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.models.openai import OpenAIModel
 from pydantic_ai import Agent, RunContext
-from pydantic_ai.mcp import MCPServerHTTP
+# from pydantic_ai.mcp import MCPServerHTTP
 from dataclasses import dataclass
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
@@ -57,9 +57,9 @@ class AgentDeps:
     supabase: Client
     embedding_client: AsyncOpenAI
     http_client: AsyncClient
-    brave_api_key: str | None
-    searxng_base_url: str | None
     memories: str
+    brave_api_key: str = None
+    searxng_base_url: str = None
 
 # To use the code execution MCP server:
 # First uncomment the line below that defines 'code_execution_server', then also uncomment 'mcp_servers=[code_execution_server]'

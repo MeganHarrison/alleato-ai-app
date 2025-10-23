@@ -1,40 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createBrowserClient } from '@/utils/supabase-browser'
+import { createClient } from '@/lib/supabase/client'
 import { StandardizedTable, type TableColumn } from '@/components/tables/standardized-table'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { toast } from '@/components/ui/use-toast'
+import type { Database } from '@/types/database.types'
 
-interface DocumentMetadata {
-  id: string
-  title: string | null
-  date: string | null
-  project: string | null
-  project_id: number | null
-  participants: string | null
-  duration_minutes: number | null
-  summary: string | null
-  overview: string | null
-  action_items: string | null
-  bullet_points: string | null
-  outline: string | null
-  category: string | null
-  type: string | null
-  fireflies_link: string | null
-  fireflies_id: string | null
-  url: string | null
-  created_at: string | null
-  employee: string | null
-  tags: string | null
-  content: string | null
-}
+type DocumentMetadata = Database['public']['Tables']['document_metadata']['Row']
 
 export default function MeetingsPage() {
   const [meetings, setMeetings] = useState<DocumentMetadata[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createBrowserClient()
+  const supabase = createClient()
 
   useEffect(() => {
     loadMeetings()
@@ -43,13 +22,20 @@ export default function MeetingsPage() {
   async function loadMeetings() {
     setIsLoading(true)
     try {
+      console.log('Fetching meetings from document_metadata table...')
+      
       const { data, error } = await supabase
         .from('document_metadata')
         .select('*')
+        .or('type.eq.meeting,type.eq.Meeting,category.eq.meeting,category.eq.Meeting,type.is.null')
         .order('date', { ascending: false })
 
+      console.log('Query result:', { data, error })
+      
       if (error) throw error
+      
       setMeetings(data || [])
+      console.log(`Loaded ${data?.length || 0} meetings`)
     } catch (error) {
       console.error('Error fetching meetings:', error)
       toast({
@@ -171,21 +157,27 @@ export default function MeetingsPage() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-muted-foreground">Loading meetings...</div>
+      </div>
+    )
+  }
+
   return (
-    <div className="mx-auto p-6">
-      <StandardizedTable
-        data={meetings}
-        columns={columns}
-        tableName="Meetings"
-        primaryKey="id"
-        onUpdate={handleUpdate}
-        onDelete={handleDelete}
-        onRefresh={loadMeetings}
-        enableEdit={true}
-        enableDelete={true}
-        enableExport={true}
-        emptyMessage="No meetings found. Your meeting documents will appear here once they are processed."
-      />
-    </div>
+    <StandardizedTable
+      data={meetings}
+      columns={columns}
+      tableName="Meetings"
+      primaryKey="id"
+      onUpdate={handleUpdate}
+      onDelete={handleDelete}
+      onRefresh={loadMeetings}
+      enableEdit={true}
+      enableDelete={true}
+      enableExport={true}
+      emptyMessage="No meetings found. Your meeting documents will appear here once they are processed."
+    />
   )
 }

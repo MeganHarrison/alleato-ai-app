@@ -6,17 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2, Circle, Clock, Database, Bot, Brain, Cloud, FileText, Users, Lock, AlertTriangle, Zap, Building } from "lucide-react";
+import { PageHeader } from "@/components/page-header"
+
 
 export default function ArchitecturePage() {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
+    <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-3">System Architecture Overview</h1>
-        <p className="text-xl text-muted-foreground">
-          Understanding how your AI-powered business intelligence system works
-        </p>
+        <PageHeader 
+                  title="System Architecture"
+                  description="This system transforms your raw business data into actionable intelligence, helping you make better decisions faster and never miss critical information."
+                />
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -81,26 +83,16 @@ export default function ArchitecturePage() {
               </CardContent>
             </Card>
           </div>
-
-          <Alert className="border-[#0E172A]/20 bg-[#0E172A]/5">
-            <Zap className="h-4 w-4" />
-            <AlertTitle>Key Benefit</AlertTitle>
-            <AlertDescription>
-              This system transforms your raw business data into actionable intelligence, helping you make better decisions faster and never miss critical information.
-            </AlertDescription>
-          </Alert>
         </TabsContent>
 
         <TabsContent value="components" className="space-y-6 mt-6">
           <div className="grid gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">Main System Components</CardTitle>
-                <CardDescription>
+            <div>
+                <h3 className="text-xl font-semibold">Main System Components</h3>
+                <p className="text-sm">
                   Each component serves a specific purpose in your business intelligence ecosystem
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+                </p>
+              <div className="pt-6 space-y-6">
                 {/* Frontend */}
                 <div className="border rounded-lg p-4 space-y-3">
                   <div className="flex items-start justify-between">
@@ -109,7 +101,7 @@ export default function ArchitecturePage() {
                         <Users className="h-6 w-6 text-[#0E172A]" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg">Web Interface (Frontend)</h3>
+                        <h3 className="font-semibold">Web Interface (Frontend)</h3>
                         <p className="text-sm text-muted-foreground">What you're looking at right now</p>
                       </div>
                     </div>
@@ -119,7 +111,7 @@ export default function ArchitecturePage() {
                     </Badge>
                   </div>
                   <div className="ml-14">
-                    <p className="text-sm mb-2">This is where you:</p>
+
                     <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
                       <li>View dashboards and reports</li>
                       <li>Chat with the AI assistant</li>
@@ -141,7 +133,7 @@ export default function ArchitecturePage() {
                         <Bot className="h-6 w-6 text-purple-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg">AI Agent (Backend API)</h3>
+                        <h3 className="font-semibold">AI Agent (Backend API)</h3>
                         <p className="text-sm text-muted-foreground">The brain of your system</p>
                       </div>
                     </div>
@@ -151,7 +143,6 @@ export default function ArchitecturePage() {
                     </Badge>
                   </div>
                   <div className="ml-14">
-                    <p className="text-sm mb-2">This component:</p>
                     <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
                       <li>Powers the intelligent chat assistant</li>
                       <li>Answers questions about your business data</li>
@@ -173,7 +164,7 @@ export default function ArchitecturePage() {
                         <Brain className="h-6 w-6 text-orange-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg">Document Intelligence Pipeline</h3>
+                        <h3 className="font-semibold">Document Intelligence Pipeline</h3>
                         <p className="text-sm text-muted-foreground">Processes and understands your documents</p>
                       </div>
                     </div>
@@ -183,7 +174,6 @@ export default function ArchitecturePage() {
                     </Badge>
                   </div>
                   <div className="ml-14">
-                    <p className="text-sm mb-2">This system:</p>
                     <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
                       <li>Automatically processes uploaded documents</li>
                       <li>Extracts key insights, action items, and decisions</li>
@@ -205,7 +195,7 @@ export default function ArchitecturePage() {
                         <Database className="h-6 w-6 text-green-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg">Database System</h3>
+                        <h3 className="font-semibold">Database System</h3>
                         <p className="text-sm text-muted-foreground">Stores all your business data securely</p>
                       </div>
                     </div>
@@ -215,7 +205,6 @@ export default function ArchitecturePage() {
                     </Badge>
                   </div>
                   <div className="ml-14">
-                    <p className="text-sm mb-2">Stores:</p>
                     <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
                       <li>User profiles and permissions</li>
                       <li>Projects, tasks, and timelines</li>
@@ -229,8 +218,8 @@ export default function ArchitecturePage() {
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </TabsContent>
 

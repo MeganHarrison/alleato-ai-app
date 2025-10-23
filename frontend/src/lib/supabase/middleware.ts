@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
   const user = data?.user
 
   // Define public paths that don't require authentication
-  const publicPaths = ['/', '/chat', '/auth', '/login', '/signup', '/forgot-password', '/api/auth', '/debug', '/projects']
+  const publicPaths = ['/', '/chat', '/ChatKitDemo', '/auth', '/login', '/signup', '/forgot-password', '/api/auth', '/api/chatkit', '/debug', '/projects']
   const isPublicPath = publicPaths.some(path => 
     path === '/' ? request.nextUrl.pathname === '/' : request.nextUrl.pathname.startsWith(path)
   )

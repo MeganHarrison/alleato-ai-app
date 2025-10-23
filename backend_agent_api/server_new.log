@@ -37,3 +37,10 @@ INFO:     127.0.0.1:65031 - "POST /api/chatkit/message HTTP/1.1" 200 OK
 Using direct OpenAI for message: How does this work?
 Processing message with auth: True
 INFO:     127.0.0.1:49587 - "POST /api/chatkit/message HTTP/1.1" 200 OK
+Using direct OpenAI for message: Return only the text: “✅ Connected to wf_68f9ed871f3881909581687179fba37f01b09bb8edcbabda”
+INFO:     127.0.0.1:65091 - "POST /api/chatkit/sessions HTTP/1.1" 200 OK
+Invalid session: test-session
+Available sessions: ['cs_3922ba7c-ddf9-4b03-8c91-7a955ff5f7c7_106d7254', 'cs_28ece096-fcc0-4848-b18a-4b6358df1c73_cb0bbb26', 'cs_156cb70a-7272-4bb7-b544-09ccbf8ba74a_b5e025a3']
+Processing message with auth: True
+INFO:     127.0.0.1:65091 - "POST /api/chatkit/message HTTP/1.1" 200 OK
+./start_server.sh: line 15: 82835 Killed: 9               python simple_chatkit_test.py

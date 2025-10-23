@@ -12,4 +12,4 @@ pkill -f "chatkit_backend.py" || true
 
 # Start the server
 echo "Starting ChatKit production server..."
-python chatkit_backend.py
+python3 chatkit_backend.py

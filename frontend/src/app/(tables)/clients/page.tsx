@@ -159,17 +159,14 @@ export default function ClientsPage() {
 
   if (loading) {
     return (
-      <div>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-muted-foreground">Loading clients...</div>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="text-muted-foreground">Loading clients...</div>
       </div>
     )
   }
 
   return (
-    <div>
-      <StandardizedTable
+    <StandardizedTable
         data={clients}
         columns={columns}
         tableName="Client"
@@ -192,7 +189,6 @@ export default function ClientsPage() {
           }
         ]}
         emptyMessage="No clients found. Add your first client to get started."
-      />
-    </div>
+    />
   )
 }

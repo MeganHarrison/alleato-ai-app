@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/meganharrison/Downloads/ai-agent-mastery-main/6_Agent_Deployment/backend_agent_api/venv"
+VIRTUAL_ENV="/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

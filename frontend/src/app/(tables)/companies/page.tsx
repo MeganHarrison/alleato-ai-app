@@ -178,17 +178,14 @@ export default function CompaniesPage() {
 
   if (loading) {
     return (
-      <div>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-muted-foreground">Loading companies...</div>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="text-muted-foreground">Loading companies...</div>
       </div>
     )
   }
 
   return (
-    <div>
-      <StandardizedTable
+    <StandardizedTable
         data={companies}
         columns={columns}
         tableName="Company"
@@ -216,7 +213,6 @@ export default function CompaniesPage() {
           }
         ]}
         emptyMessage="No companies found. Add your first company to get started."
-      />
-    </div>
+    />
   )
 }
