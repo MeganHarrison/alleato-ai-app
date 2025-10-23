@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@openai/chatkit-react": "^1.1.1",
     "playwright": "^1.55.0",
     "puppeteer": "^24.22.0"
   }

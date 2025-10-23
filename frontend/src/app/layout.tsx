@@ -1,15 +1,16 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { Toaster } from '@/components/ui/toaster'
-import ClientLayout from '@/components/ClientLayout'
-import { AuthProviderWrapper } from '@/components/providers/AuthProviderWrapper'
+import Script from "next/script"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { Toaster } from "@/components/ui/toaster"
+import ClientLayout from "@/components/ClientLayout"
+import { AuthProviderWrapper } from "@/components/providers/AuthProviderWrapper"
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: 'AI Agent Dashboard',
-  description: 'AI Agent Dashboard built with Next.js',
+  title: "AI Agent Dashboard",
+  description: "AI Agent Dashboard built with Next.js",
 }
 
 export default function RootLayout({
@@ -19,11 +20,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Load ChatKit runtime once at page load */}
+        <Script
+          src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className={inter.className}>
         <AuthProviderWrapper>
           <ClientLayout>
             <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
-            {children}
+              {children}
             </div>
           </ClientLayout>
           <Toaster />
