@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, createContext, useContext, ReactNode } from 'react';
-import { createClient } from '../lib/supabase';
+import { supabase } from '@/lib/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/use-toast';
 
@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const supabase = createClient();
 
   useEffect(() => {
     const setAuthData = async () => {

@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 import { Database } from "@/types/database.types"
 
 type Document = Database["public"]["Tables"]["documents"]["Row"]

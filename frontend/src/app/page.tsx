@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { createClient } from "@/lib/supabase";
+import { supabase } from '@/lib/supabase/client'
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,13 +70,14 @@ export default function DashboardPage() {
     fetchData();
   }, [showOnlyActive]);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const supabase = createClient();
+const fetchData = async () => {
+  try {
+    setLoading(true);
 
-      // Fetch projects
-      let projectQuery = supabase.from("projects").select(`
+    // Fetch projects
+    let projectQuery = supabase
+      .from("projects")
+      .select(`
         *,
         clients (id, name)
       `);

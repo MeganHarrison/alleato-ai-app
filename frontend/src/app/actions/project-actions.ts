@@ -23,7 +23,7 @@
 
 "use server"
 
-import { createClient } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import type { Database } from "@/types/database.types"

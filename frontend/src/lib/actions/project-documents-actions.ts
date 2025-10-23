@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 import { createServiceClient } from "@/lib/supabase"
 
 export async function getProjectDocuments(projectId: string) {

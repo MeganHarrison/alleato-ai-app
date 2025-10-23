@@ -2,8 +2,7 @@
 
 import { AddProjectButton } from "@/components/table-buttons/add-project-button";
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase";
-import { cn } from "@/lib/utils";
+import { createClient } from '@/lib/supabase/server'import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Briefcase, MapPin } from "lucide-react";
 import Link from "next/link";

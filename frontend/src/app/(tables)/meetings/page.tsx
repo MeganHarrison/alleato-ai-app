@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase/client'
 import { StandardizedTable, type TableColumn } from '@/components/tables/standardized-table'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
@@ -13,7 +13,6 @@ type DocumentMetadata = Database['public']['Tables']['document_metadata']['Row']
 export default function MeetingsPage() {
   const [meetings, setMeetings] = useState<DocumentMetadata[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
     loadMeetings()

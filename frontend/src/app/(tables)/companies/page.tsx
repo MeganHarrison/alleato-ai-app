@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react'
 import { StandardizedTable, TableColumn } from "@/components/tables/standardized-table"
 import { getCompanies, Company } from "@/app/actions/companies-actions"
-import { createClient } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
+
 import { Badge } from "@/components/ui/badge"
 import { format } from "date-fns"
 

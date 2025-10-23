@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 import { createServiceClient } from "@/lib/supabase"
 import { Database } from "@/types/database.types"
 import { revalidatePath } from "next/cache"

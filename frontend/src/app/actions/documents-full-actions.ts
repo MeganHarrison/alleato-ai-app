@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase/client"
 
 export interface Document {
   id: string
