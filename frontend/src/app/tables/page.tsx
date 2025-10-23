@@ -6,8 +6,12 @@ import { PageHeader } from "@/components/page-header"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getTableRouteMeta } from "../(tables)/table-route-config"
 
-const TABLES_DIRECTORY = path.join(process.cwd(), "src/app/(tables)")
-const TABLE_PAGE_FILES = ["page.tsx", "page.ts"]
+const TABLES_DIRECTORY_CANDIDATES = [
+  path.join(process.cwd(), "src/app/(tables)"),
+  path.join(process.cwd(), "app/(tables)"),
+  path.join(process.cwd(), ".next/server/app/(tables)")
+]
+const TABLE_PAGE_FILES = ["page.tsx", "page.ts", "page.js", "page.mjs", "page.jsx", "page.cjs"]
 
 type TablePage = {
   slug: string
@@ -48,15 +52,49 @@ async function hasPageFile(directoryPath: string) {
   return false
 }
 
+async function findTablesDirectory() {
+  for (const candidate of TABLES_DIRECTORY_CANDIDATES) {
+    try {
+      const stats = await stat(candidate)
+
+      if (stats.isDirectory()) {
+        return candidate
+      }
+    } catch (error) {
+      if (!isEnoent(error)) {
+        throw error
+      }
+    }
+  }
+
+  return null
+}
+
 async function getTablePages(): Promise<TablePage[]> {
-  const entries = await readdir(TABLES_DIRECTORY, { withFileTypes: true })
+  const tablesDirectory = await findTablesDirectory()
+
+  if (!tablesDirectory) {
+    return []
+  }
+
+  let entries: import("fs").Dirent[]
+
+  try {
+    entries = await readdir(tablesDirectory, { withFileTypes: true })
+  } catch (error) {
+    if (isEnoent(error)) {
+      return []
+    }
+
+    throw error
+  }
   const pages: TablePage[] = []
 
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
 
     const slug = entry.name
-    const directoryPath = path.join(TABLES_DIRECTORY, slug)
+    const directoryPath = path.join(tablesDirectory, slug)
 
     if (!(await hasPageFile(directoryPath))) continue
 
