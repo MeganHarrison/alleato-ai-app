@@ -1,18 +1,32 @@
-// frontend/src/lib/supabase/index.ts
+'use server'
+
 import { createBrowserClient, createServerClient } from '@supabase/ssr'
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error('Missing Supabase environment variables.')
+  throw new Error(
+    'Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env.local file.'
+  )
 }
 
-export const createSupabaseClient = () => {
-  if (typeof window !== 'undefined') {
+/**
+ * Creates a Supabase client appropriate for the current execution environment.
+ * - Browser: uses persistent session (via localStorage)
+ * - Server / Edge: stateless client with session persistence disabled
+ */
+export function createSupabaseClient() {
+  const isBrowser = typeof window !== 'undefined'
+
+  if (isBrowser) {
     return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   }
+
   return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { persistSession: false, autoRefreshToken: false },
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
   })
 }
