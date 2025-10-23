@@ -63,7 +63,7 @@ export default function AIConstructionResearchPage() {
         </div>
         <Card className="p-8 bg-muted/30">
           <blockquote className="text-lg italic">
-            "The strategic imperative is decisive action now—not because Alleato must be first but because being in the middle of the pack by 2027 requires starting comprehensive implementation in 2025."
+            &ldquo;The strategic imperative is decisive action now—not because Alleato must be first but because being in the middle of the pack by 2027 requires starting comprehensive implementation in 2025.&rdquo;
           </blockquote>
         </Card>
       </section>
@@ -262,7 +262,7 @@ export default function AIConstructionResearchPage() {
             },
             {
               title: "Client Advisory Services",
-              description: "Become trusted advisor on AI integration, writing specifications competitors can't meet.",
+              description: "Become trusted advisor on AI integration, writing specifications competitors can’t meet.",
               icon: <Brain className="h-6 w-6" />
             }
           ].map((opportunity, index) => (
@@ -544,7 +544,7 @@ export default function AIConstructionResearchPage() {
               Large owners may bring AI capabilities in-house, reducing contractor reliance.
             </p>
             <div className="bg-muted/50 rounded p-4">
-              <p className="text-sm"><strong>Mitigation:</strong> Develop integrated capabilities across design-build that owners can't replicate. Emphasize process integration over point solutions.</p>
+              <p className="text-sm"><strong>Mitigation:</strong> Develop integrated capabilities across design-build that owners can’t replicate. Emphasize process integration over point solutions.</p>
             </div>
           </Card>
         </div>
@@ -558,7 +558,7 @@ export default function AIConstructionResearchPage() {
             The window for fast-follower advantage remains open but closes by 2027. Firms that delay another year risk permanent disadvantage as AI-enabled competitors capture market share, develop data moats, attract best talent, and establish thought leadership positions difficult to displace.
           </p>
           <blockquote className="text-xl italic border-l-4 border-l-white pl-4">
-            "The question for Alleato is whether to lead this transition or follow from behind."
+            &ldquo;The question for Alleato is whether to lead this transition or follow from behind.&rdquo;
           </blockquote>
         </Card>
       </section>
