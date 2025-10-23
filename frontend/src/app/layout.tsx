@@ -22,7 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProviderWrapper>
           <ClientLayout>
+            <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
             {children}
+            </div>
           </ClientLayout>
           <Toaster />
         </AuthProviderWrapper>

@@ -1,6 +1,6 @@
 'use client';
 
-import ChatKitDemo from '@/pages/ChatKitDemo';
+import ChatKitDemo from '@/components/ChatKitDemo';
 
 export default function ChatKitPage() {
   return <ChatKitDemo />;

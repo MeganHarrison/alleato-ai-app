@@ -29,7 +29,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/meganharrison/Downloads/ai-agent-mastery-main/6_Agent_Deployment/backend_agent_api/venv"
+set -gx VIRTUAL_ENV "/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

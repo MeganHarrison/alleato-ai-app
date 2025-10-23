@@ -1,138 +1,102 @@
 # TASKS
 
-## ✅ COMPLETED - Enhanced Business Insights System
+## Chatkit - NUMBER ONE PRIORITY!!! 
 
-### 🚀 What Was Built:
+- [ ] This is still not working. Be proactive and FIX THIS!!!!!
 
-**Enhanced Business Insights Engine** - A sophisticated GPT-5 powered system that replaces the basic insights generation with enterprise-grade business intelligence extraction.
+## Dashboard
+- [ ] Redirects to a 404 page when you click on the projects in the table.
 
-### 📁 New Files Created:
 
-1. **`insights/enhanced/business_insights_engine.py`** - Core insights engine
-   - GPT-5 powered extraction with advanced prompting
-   - Maps to sophisticated `document_insights` schema
-   - Supports 15+ business insight types (action_items, decisions, risks, opportunities, etc.)
-   - Financial impact analysis with exact dollar amounts
-   - Critical path detection and cross-project dependencies
-   - Stakeholder analysis and urgency indicators
+## Tables
 
-2. **`insights/enhanced/enhanced_insights_processor.py`** - Integration layer
-   - Batch processing with concurrency control
-   - Quality filtering (minimum content length, file type validation)
-   - Duplicate detection to avoid reprocessing
-   - Comprehensive error handling and retry logic
+- [ ] Fix (tables) layout. The page width and container settings should be controlled in the root layout. This layout should just control the unique content styling.
+- [ ] Meetings table - not displaying data. Should be synced with Supabase document-metadata table.
+```
+create table public.document_metadata (
+  id text not null,
+  title text null,
+  url text null,
+  created_at timestamp without time zone null default now(),
+  type text null,
+  source text null,
+  content text null,
+  summary text null,
+  participants text null,
+  tags text null,
+  category text null,
+  fireflies_id text null,
+  fireflies_link text null,
+  project_id bigint null,
+  project text null,
+  date timestamp with time zone null,
+  outline text null,
+  duration_minutes integer null,
+  bullet_points text null,
+  action_items text null,
+  created_by uuid null default auth.uid (),
+  entities jsonb null,
+  file_id integer null,
+  overview text null,
+  employee text null,
+  fireflies_file_url text null,
+  description text null,
+  constraint document_metadata_pkey primary key (id),
+  constraint document_metadata_file_id_key unique (file_id),
+  constraint document_metadata_employee_fkey foreign KEY (employee) references employees (email),
+  constraint document_metadata_project_id_fkey foreign KEY (project_id) references projects (id) on update CASCADE on delete set null
+) TABLESPACE pg_default;
 
-3. **`insights/enhanced/enhanced_insights_api.py`** - RESTful API endpoints
-   - `/api/enhanced-insights/process-document` - Single document processing
-   - `/api/enhanced-insights/process-batch` - Batch processing
-   - `/api/enhanced-insights/insights` - Filtered insights retrieval
-   - `/api/enhanced-insights/summary` - System analytics
-   - Insight management (resolve, assign, delete)
+create index IF not exists idx_document_metadata_category on public.document_metadata using btree (category) TABLESPACE pg_default;
 
-4. **`insights_api.py`** - Updated main API (REPLACED)
-   - Integrated enhanced insights system
-   - Backward compatibility with legacy endpoints
-   - Comprehensive health checks and status reporting
-   - Background task processing for scalability
+create index IF not exists idx_document_metadata_date on public.document_metadata using btree (date) TABLESPACE pg_default;
 
-5. **`test_enhanced_insights.py`** - Testing script
-   - Sample business documents for testing
-   - End-to-end validation of insights extraction
-   - Performance metrics and analytics
+create index IF not exists idx_document_metadata_type on public.document_metadata using btree (type) TABLESPACE pg_default;
 
-### 🎯 Key Improvements Over Basic System:
+create index IF not exists idx_document_metadata_participants on public.document_metadata using gin (to_tsvector('english'::regconfig, participants)) TABLESPACE pg_default;
 
-| Aspect | Before (Basic) | After (Enhanced) |
-|--------|----------------|------------------|
-| **Model** | Llama 3.1 8B | GPT-5 |
-| **Schema** | Basic ai_insights | Sophisticated document_insights |
-| **Insight Quality** | Generic extractions | Business-focused intelligence |
-| **Financial Analysis** | ❌ None | ✅ Exact dollar amounts |
-| **Critical Path** | ❌ None | ✅ Project impact detection |
-| **Stakeholder Analysis** | ❌ None | ✅ Affected parties identification |
-| **Urgency Detection** | ❌ None | ✅ Urgency indicators |
-| **Business Impact** | ❌ None | ✅ Strategic impact assessment |
-| **Confidence Scoring** | Basic | Advanced with evidence |
+create index IF not exists idx_document_metadata_content_fts on public.document_metadata using gin (to_tsvector('english'::regconfig, content)) TABLESPACE pg_default;
 
-### 🔧 Enhanced Schema Utilization:
+create index IF not exists idx_document_metadata_composite on public.document_metadata using btree (type, category, date desc) TABLESPACE pg_default;
 
-The system now fully leverages your sophisticated `document_insights` schema:
+create index IF not exists idx_document_entities on public.document_metadata using gin (entities) TABLESPACE pg_default;
 
-```sql
-- insight_type: 15+ business categories
-- severity: critical/high/medium/low with business logic  
-- business_impact: Strategic impact description
-- financial_impact: Exact dollar amounts extracted
-- urgency_indicators: Array of urgency phrases
-- stakeholders_affected: People/roles impacted
-- exact_quotes: Supporting evidence from documents
-- numerical_data: Metrics and KPIs identified
-- critical_path_impact: Boolean for project criticality
-- cross_project_impact: Related project IDs
-- dependencies: Task/project dependencies
-- source_meetings: Meeting references
+create index IF not exists idx_table_project_id on public.document_metadata using btree (project_id) TABLESPACE pg_default;
+
+create index IF not exists idx_document_metadata_lower_title on public.document_metadata using btree (lower(title)) TABLESPACE pg_default;
+
+create trigger set_project_id_from_title_trg BEFORE INSERT
+or
+update on document_metadata for EACH row
+execute FUNCTION set_project_id_from_title ();
+
+create trigger trg_sync_document_project_name BEFORE INSERT
+or
+update OF project_id on document_metadata for EACH row
+execute FUNCTION sync_document_project_name ();
 ```
 
-### 🚀 How to Test:
-
-1. **Run the test script:**
-   ```bash
-   cd /Users/meganharrison/Documents/github/ai-agent-mastery3/6_Agent_Deployment/backend_rag_pipeline
-   python test_enhanced_insights.py
-   ```
-
-2. **Start the enhanced API:**
-   ```bash
-   python insights_api.py
-   ```
-
-3. **Test endpoints:**
-   - Health check: `GET http://localhost:8002/health`
-   - Process queue: `POST http://localhost:8002/insights/process-pending`
-   - Get insights: `GET http://localhost:8002/api/enhanced-insights/insights`
-
-### 💼 Business Value:
-
-- **Executive Dashboard Ready**: Insights are structured for C-level consumption
-- **Financial Impact Tracking**: Automatic extraction of budget impacts, penalties, costs
-- **Risk Management**: Critical and high-severity issues automatically flagged
-- **Project Management**: Dependencies, blockers, and critical path items identified
-- **Stakeholder Communication**: Affected parties and required communications identified
-
-### 📈 Next Steps:
-
-1. **Test with real documents** in your system
-2. **Frontend integration** to display enhanced insights
-3. **Dashboard creation** for executives and project managers
-4. **Alerts and notifications** for critical insights
-5. **Integration with project management tools**
-
----
+- [ ] Tasks table - not displaying data. Should be synced with Supabase project-tasks table.
 
 ## 🔄 TODO - Remaining Items:
 
-- [ ] Meetings table
-- [ ] Meetings page  
-- [ ] Projects dashboard
-- [ ] Projects Page
+- [ ] Fix layout on pages in the (tables) folder. **MUST BE CONSISTENT**
+- [ ] Supabase auth: None of the pages should be accessible without being logged in other than the obvious login, forgot-password, create an account, ect. Even after I login its not letting me upload a document because it says I have to be logged in.
+- [ ] Create a page that list all of the table pages
+- [ ] Memory
+- [ ] Chat history  
+- [ ] Users page
+- [ ] Fluid drag and drop like Notion
 - [ ] Upload doc functionality
+- [ ] Add a list of leadership tasks
+- [ ] Create issues log Supabase table
+- [ ] Sitemap page that updates automatically
+- [ ] Fluid drag and drop like Notion
 
-Fix:
+## Leadership Action Items
+- [ ] Update Zapier integrations for Teams, Outlook, Onedrive
+- [ ] Update Openai api key
+- [ ] Add issues to issues log
 
-1. /documents
-2. /meetings
-3. http://localhost:3000/insights real data needed
 
-Unhandled Runtime Error
-Error: useActionButton must be used within TablesLayout
-
-Source
-src/hooks/use-action-button.ts (13:10) @ useActionButton
-
-  11 | const context = React.useContext(ActionButtonContext)
-  12 | if (!context) {
-> 13 |   throw new Error('useActionButton must be used within TablesLayout')
-     |        ^
-  14 | }
-  15 | return context
-  16 | }
+Switch the chat to use super bass instead of open AI vector store

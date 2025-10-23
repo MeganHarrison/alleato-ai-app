@@ -6,9 +6,5 @@ export const dynamic = "force-dynamic"
 export default async function AIInsightsPage() {
   const insights = await getAIInsights()
 
-  return (
-    <div className="space-y-6">
-      <AIInsightsDataTable insights={insights} />
-    </div>
-  )
+  return <AIInsightsDataTable insights={insights} />
 }

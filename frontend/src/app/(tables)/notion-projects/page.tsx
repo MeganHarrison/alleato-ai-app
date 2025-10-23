@@ -15,7 +15,7 @@ export default async function NotionProjectsPage(): Promise<ReactElement> {
   const { projects, error } = await fetchNotionProjects();
 
   return (
-    <div className="space-y-4 p-2 sm:p-4 md:p-6 w-[95%] sm:w-full mx-auto">
+    <>
       {/* Header Section */}
       <div className="flex items-start justify-between">
         <div>
@@ -77,6 +77,6 @@ export default async function NotionProjectsPage(): Promise<ReactElement> {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }

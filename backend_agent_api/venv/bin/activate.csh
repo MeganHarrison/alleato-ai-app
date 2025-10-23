@@ -8,7 +8,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/Users/meganharrison/Downloads/ai-agent-mastery-main/6_Agent_Deployment/backend_agent_api/venv"
+setenv VIRTUAL_ENV "/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/venv"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

@@ -1,2 +1,127 @@
-CLAUDE.md
-.claude
+# =====================
+# Core Node.js / Next.js
+# =====================
+node_modules/
+.next/
+out/
+dist/
+build/
+.vercel/
+.cache/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =====================
+# Environment & Config
+# =====================
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+.envrc
+*.pem
+*.key
+
+# =====================
+# OS Files
+# =====================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+*.swp
+*.swo
+
+# =====================
+# IDE / Editor Folders
+# =====================
+.vscode/
+.idea/
+*.iml
+
+# =====================
+# Python / Virtualenv (for RAG pipeline or Supabase scripts)
+# =====================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+pip-wheel-metadata/
+.mypy_cache/
+.pytest_cache/
+coverage/
+htmlcov/
+
+# =====================
+# Logs & Temp Files
+# =====================
+logs/
+*.log
+*.out
+*.err
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+
+# =====================
+# Frontend Build & Artifacts
+# =====================
+frontend/.next/
+frontend/node_modules/
+frontend/.vercel/
+frontend/out/
+
+# =====================
+# Backend Build / Artifacts
+# =====================
+backend/node_modules/
+backend/.vercel/
+backend/.next/
+backend/dist/
+backend/.cache/
+
+# =====================
+# Local Data or DB Files
+# =====================
+*.sqlite
+*.db
+*.rdb
+*.sql
+.dump
+
+# =====================
+# Generated Assets
+# =====================
+uploads/
+public/uploads/
+storage/
+supabase/.branches/
+supabase/.temp/
+supabase/functions/_generated/
+
+# =====================
+# Miscellaneous
+# =====================
+*.local
+*.bak
+*.tmp
+*.orig
+*.rej
+*.tgz
+*.tar.gz
+
+# =====================
+# JetBrains / IntelliJ
+# =====================
+.idea/
+*.iml
+*.iws

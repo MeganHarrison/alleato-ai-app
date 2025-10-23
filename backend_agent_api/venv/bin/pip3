@@ -1,4 +1,6 @@
-#!/Users/meganharrison/Downloads/ai-agent-mastery-main/6_Agent_Deployment/backend_agent_api/venv/bin/python3
+#!/bin/sh
+'''exec' "/Users/meganharrison/Documents/github/agent-builder/Alleato AI Mastery/backend_agent_api/venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -2017,7 +2017,7 @@ export type Database = {
           meta: Json | null
           ordinal: number
           page_reference: number | null
-          search_vector: unknown | null
+          search_vector: unknown
           section_id: string
           source_text: string
         }
@@ -2031,7 +2031,7 @@ export type Database = {
           meta?: Json | null
           ordinal: number
           page_reference?: number | null
-          search_vector?: unknown | null
+          search_vector?: unknown
           section_id: string
           source_text: string
         }
@@ -2045,7 +2045,7 @@ export type Database = {
           meta?: Json | null
           ordinal?: number
           page_reference?: number | null
-          search_vector?: unknown | null
+          search_vector?: unknown
           section_id?: string
           source_text?: string
         }
@@ -4399,7 +4399,7 @@ export type Database = {
           event_data: Json | null
           event_type: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           occurred_at: string | null
           project_id: number | null
           session_id: string | null
@@ -4411,7 +4411,7 @@ export type Database = {
           event_data?: Json | null
           event_type: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           occurred_at?: string | null
           project_id?: number | null
           session_id?: string | null
@@ -4423,7 +4423,7 @@ export type Database = {
           event_data?: Json | null
           event_type?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           occurred_at?: string | null
           project_id?: number | null
           session_id?: string | null
@@ -5632,12 +5632,9 @@ export type Database = {
         Args: { archived_by_param?: string; task_id_param: string }
         Returns: boolean
       }
-      auto_archive_old_chats: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      auto_archive_old_chats: { Args: never; Returns: number }
       backfill_meeting_participants_to_contacts: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           total_contacts_added: number
           unique_emails: string[]
@@ -5651,14 +5648,7 @@ export type Database = {
           success: boolean
         }[]
       }
-      binary_quantize: {
-        Args: { "": string } | { "": unknown }
-        Returns: unknown
-      }
-      convert_embeddings_to_vector: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      convert_embeddings_to_vector: { Args: never; Returns: undefined }
       create_conversation_with_message: {
         Args: {
           p_agent_type: string
@@ -5695,10 +5685,7 @@ export type Database = {
           similarity: number
         }[]
       }
-      execute_custom_sql: {
-        Args: { sql_query: string }
-        Returns: Json
-      }
+      execute_custom_sql: { Args: { sql_query: string }; Returns: Json }
       extract_names: {
         Args: { participant: string }
         Returns: {
@@ -5718,33 +5705,49 @@ export type Database = {
           title2: string
         }[]
       }
-      find_sprinkler_requirements: {
-        Args:
-          | {
-              p_asrs_type?: string
-              p_ceiling_height_ft?: number
-              p_commodity_class?: string
-              p_k_factor?: number
-              p_system_type?: string
-            }
-          | {
+      find_sprinkler_requirements:
+        | {
+            Args: {
               p_asrs_type?: string
               p_ceiling_height_ft?: number
               p_commodity_class?: string
               p_system_type?: string
               p_tolerance_ft?: number
             }
-        Returns: {
-          height_match_type: string
-          k_factor: number
-          pressure_psi: number
-          special_conditions: string[]
-          sprinkler_count: number
-          table_id: string
-          table_number: number
-          title: string
-        }[]
-      }
+            Returns: {
+              height_match_type: string
+              k_factor: number
+              pressure_psi: number
+              special_conditions: string[]
+              sprinkler_count: number
+              table_id: string
+              table_number: number
+              title: string
+            }[]
+          }
+        | {
+            Args: {
+              p_asrs_type?: string
+              p_ceiling_height_ft?: number
+              p_commodity_class?: string
+              p_k_factor?: number
+              p_system_type?: string
+            }
+            Returns: {
+              ceiling_height_ft: number
+              k_factor: number
+              k_type: string
+              pressure_bar: number
+              pressure_psi: number
+              special_conditions: string[]
+              sprinkler_count: number
+              sprinkler_orientation: string
+              sprinkler_response: string
+              table_id: string
+              table_number: number
+              title: string
+            }[]
+          }
       full_text_search_meetings: {
         Args: { match_count?: number; search_query: string }
         Returns: {
@@ -5792,7 +5795,7 @@ export type Database = {
         }[]
       }
       get_asrs_figure_options: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           asrs_types: string[]
           container_types: string[]
@@ -5887,7 +5890,7 @@ export type Database = {
         }[]
       }
       get_meeting_analytics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avg_duration_minutes: number
           meetings_by_category: Json
@@ -5906,7 +5909,7 @@ export type Database = {
         }[]
       }
       get_meeting_statistics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avg_duration_minutes: number
           meetings_this_week: number
@@ -5994,7 +5997,7 @@ export type Database = {
         }[]
       }
       get_project_matching_context: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           active_keywords: string[]
           aliases: string[]
@@ -6053,58 +6056,6 @@ export type Database = {
           total_messages: number
           total_tokens_used: number
         }[]
-      }
-      gtrgm_compress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: { "": unknown }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      halfvec_avg: {
-        Args: { "": number[] }
-        Returns: unknown
-      }
-      halfvec_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      halfvec_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      halfvec_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
-      hnsw_bit_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnsw_halfvec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnsw_sparsevec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      hnswhandler: {
-        Args: { "": unknown }
-        Returns: unknown
       }
       hybrid_search: {
         Args: {
@@ -6168,30 +6119,7 @@ export type Database = {
           upper_height_ft: number
         }[]
       }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      ivfflat_bit_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflat_halfvec_support: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      ivfflathandler: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      l2_norm: {
-        Args: { "": unknown } | { "": unknown }
-        Returns: number
-      }
-      l2_normalize: {
-        Args: { "": string } | { "": unknown } | { "": unknown }
-        Returns: unknown
-      }
+      is_admin: { Args: never; Returns: boolean }
       mark_document_processed: {
         Args: {
           p_document_id: string
@@ -6333,26 +6261,36 @@ export type Database = {
           vector_id: string
         }[]
       }
-      match_fm_tables: {
-        Args:
-          | {
+      match_fm_tables:
+        | {
+            Args: {
               match_count?: number
               match_threshold?: number
               query_embedding: string
             }
-          | {
+            Returns: {
+              content_text: string
+              content_type: string
+              metadata: Json
+              similarity: number
+              table_id: string
+            }[]
+          }
+        | {
+            Args: {
               match_count?: number
               match_threshold?: number
               query_embedding: string
             }
-        Returns: {
-          content_text: string
-          content_type: string
-          metadata: Json
-          similarity: number
-          table_id: string
-        }[]
-      }
+            Returns: {
+              asrs_type: string
+              metadata: Json
+              similarity: number
+              system_type: string
+              table_id: string
+              title: string
+            }[]
+          }
       match_meeting_chunks: {
         Args: {
           match_count?: number
@@ -6429,14 +6367,8 @@ export type Database = {
           similarity: number
         }[]
       }
-      normalize_exact_quotes: {
-        Args: { in_json: Json }
-        Returns: string
-      }
-      refresh_search_vectors: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      normalize_exact_quotes: { Args: { in_json: Json }; Returns: string }
+      refresh_search_vectors: { Args: never; Returns: undefined }
       search_asrs_figures: {
         Args: {
           p_asrs_type?: string
@@ -6518,9 +6450,9 @@ export type Database = {
           title: string
         }[]
       }
-      search_meeting_chunks: {
-        Args:
-          | {
+      search_meeting_chunks:
+        | {
+            Args: {
               chunk_types?: string[]
               date_from?: string
               date_to?: string
@@ -6529,27 +6461,43 @@ export type Database = {
               project_filter?: number
               query_embedding: string
             }
-          | {
+            Returns: {
+              chunk_id: string
+              chunk_index: number
+              chunk_text: string
+              chunk_type: string
+              meeting_date: string
+              meeting_id: string
+              meeting_title: string
+              metadata: Json
+              project_id: number
+              rank_score: number
+              similarity: number
+              speakers: Json
+            }[]
+          }
+        | {
+            Args: {
               match_count?: number
               match_threshold?: number
               project_filter?: string
               query_embedding: string
             }
-        Returns: {
-          chunk_id: string
-          chunk_index: number
-          chunk_text: string
-          chunk_type: string
-          meeting_date: string
-          meeting_id: string
-          meeting_title: string
-          metadata: Json
-          project_id: number
-          rank_score: number
-          similarity: number
-          speakers: Json
-        }[]
-      }
+            Returns: {
+              chunk_end_time: number
+              chunk_index: number
+              chunk_start_time: number
+              chunk_text: string
+              id: string
+              meeting_date: string
+              meeting_id: string
+              meeting_title: string
+              project_id: string
+              project_title: string
+              similarity: number
+              speaker_info: Json
+            }[]
+          }
       search_meeting_chunks_semantic: {
         Args: {
           filter_meeting_id?: string
@@ -6606,30 +6554,8 @@ export type Database = {
           topics: string[]
         }[]
       }
-      set_limit: {
-        Args: { "": number }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: { "": string }
-        Returns: string[]
-      }
-      sparsevec_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      sparsevec_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      sparsevec_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
-      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
       suggest_project_assignments: {
         Args: {
           p_document_content: string
@@ -6674,22 +6600,6 @@ export type Database = {
           validation_notes: string[]
         }[]
       }
-      vector_avg: {
-        Args: { "": number[] }
-        Returns: string
-      }
-      vector_dims: {
-        Args: { "": string } | { "": unknown }
-        Returns: number
-      }
-      vector_norm: {
-        Args: { "": string }
-        Returns: number
-      }
-      vector_out: {
-        Args: { "": string }
-        Returns: unknown
-      }
       vector_search: {
         Args: {
           match_count?: number
@@ -6702,14 +6612,6 @@ export type Database = {
           meeting_id: string
           similarity: number
         }[]
-      }
-      vector_send: {
-        Args: { "": string }
-        Returns: string
-      }
-      vector_typmod_in: {
-        Args: { "": unknown[] }
-        Returns: number
       }
     }
     Enums: {
