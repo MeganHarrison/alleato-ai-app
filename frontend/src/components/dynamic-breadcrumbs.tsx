@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { createClient } from "@/utils/supabase/client"
+import { createClient } from "@/lib/supabase"
 import {
   Breadcrumb,
   BreadcrumbItem,

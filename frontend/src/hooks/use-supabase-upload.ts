@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/lib/supabase'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { type FileError, type FileRejection, useDropzone } from 'react-dropzone'
 

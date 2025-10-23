@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase'
 import { StandardizedTable, type TableColumn } from '@/components/tables/standardized-table'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'

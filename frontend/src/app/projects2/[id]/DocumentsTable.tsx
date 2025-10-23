@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase";
 import { format } from "date-fns";
 import {
   Calendar,

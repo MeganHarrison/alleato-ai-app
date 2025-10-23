@@ -1,4 +1,4 @@
-import { createClient } from '@/components/clients/nextjs/lib/supabase/client'
+import { createClient } from '@/components/clients/next../lib/supabase'
 import { RealtimeChannel } from '@supabase/supabase-js'
 import { useCallback, useEffect, useRef, useState } from 'react'
 

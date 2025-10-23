@@ -2,7 +2,7 @@
 
 import { useCurrentUserImage } from '@/components/blocks/current-user-avatar/hooks/use-current-user-image'
 import { useCurrentUserName } from '@/components/blocks/current-user-avatar/hooks/use-current-user-name'
-import { createClient } from '@/components/clients/nextjs/lib/supabase/client'
+import { createClient } from '@/components/clients/next../lib/supabase'
 import { useEffect, useState } from 'react'
 
 const supabase = createClient()

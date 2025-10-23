@@ -11,8 +11,6 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 
 /**
  * Creates a Supabase client appropriate for the current execution environment.
- * - Browser: uses persistent session (via localStorage)
- * - Server / Edge: stateless client with session persistence disabled
  */
 export function createSupabaseClient() {
   const isBrowser = typeof window !== 'undefined'

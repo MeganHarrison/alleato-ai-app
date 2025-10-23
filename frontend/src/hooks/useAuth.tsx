@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, createContext, useContext, ReactNode } from 'react';
-import { createClient } from '../lib/supabase/client';
+import { createClient } from '../lib/supabase';
 import { Session, User } from '@supabase/supabase-js';
 import { useToast } from '@/hooks/use-toast';
 
